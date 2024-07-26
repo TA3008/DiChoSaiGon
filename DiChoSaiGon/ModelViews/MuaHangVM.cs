@@ -24,6 +24,5 @@ namespace DiChoSaiGon.ModelViews
         [Required(ErrorMessage = "Vui lòng chọn Phường/Xã")]
         public int PhuongXa { get; set; }
         public int PaymentID { get; set; }
-        public string Note { get; set; }
     }
 }

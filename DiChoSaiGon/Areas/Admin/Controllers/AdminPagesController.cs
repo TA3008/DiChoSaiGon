@@ -10,9 +10,11 @@ using PagedList.Core;
 using DiChoSaiGon.Helpper;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiChoSaiGon.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin, Staff", Policy = "AdminAndStaffPolicy", AuthenticationSchemes = "AdminAuthen, StaffAuthen")]
     [Area("Admin")]
     public class AdminPagesController : Controller
     {

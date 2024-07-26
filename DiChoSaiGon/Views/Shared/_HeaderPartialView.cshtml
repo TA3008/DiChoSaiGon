@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-6">
                     <div class="header-top-right text-matterhorn">
-                        <p class="shipping mb-0">Free delivery on order over <span>$200</span></p>
+                        <p class="shipping mb-0">Miễn phí vẫn chuyển khi đơn hàng trên <span>1.000.000 VNĐ</span></p>
                     </div>
                 </div>
             </div>
@@ -26,22 +26,9 @@
                 <div class="col-lg-12">
                     <div class="header-middle-wrap">
                         <a href="index.html" class="header-logo">
-                            <img src="~/assets/images/logo/dark.png" alt="Header Logo">
+                            <img src="~/images/logos/logo.png" alt="Header Logo" style="width:250px; height:60px">
                         </a>
-                        <div class="header-search-area d-none d-lg-block">
-                            <form action="#" class="header-searchbox">
-                                <select class="nice-select select-search-category wide">
-                                    <option value="all">All Category</option>
-                                    <option value="product-item">Product Item</option>
-                                    <option value="product-item-2">Product Item 02</option>
-                                    <option value="product-item-3">Product Item 03</option>
-                                    <option value="product-item-4">Product Item 04</option>
-                                    <option value="product-item-5">Product Item 05</option>
-                                </select>
-                                <input class="input-field" type="text" placeholder="Search Products">
-                                <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
-                            </form>
-                        </div>
+                        
                         <div class="header-right">
                             <ul>
                                 <li class="dropdown d-none d-md-block">
@@ -51,7 +38,7 @@
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingButton">
                                         @if (User.Identity.IsAuthenticated)
                                         {
-                                            <li><a class="dropdown-item" href="my-account.html">Tài khoản của tôi</a></li>
+                                            <li><a class="dropdown-item" href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a></li>
                                             <li><a class="dropdown-item" href="/dang-xuat.html">Đăng xuất</a></li>
                                         }
                                         else
@@ -59,26 +46,23 @@
                                             <li><a class="dropdown-item" href="/dang-nhap.html">Đăng nhập</a></li>
                                             <li><a class="dropdown-item" href="/dang-ky.html">Đăng ký</a></li>
                                         }
-                                        
-                                        
+
+
                                     </ul>
                                 </li>
                                 <li class="d-none d-md-block">
-                                    <a href="wishlist.html">
-                                        <i class="pe-7s-like"></i>
-                                    </a>
-                                </li>
-                                <li class="d-block d-lg-none">
-                                    <a href="#searchBar" class="search-btn toolbar-btn">
+                                    <a href="/search.html">
                                         <i class="pe-7s-search"></i>
                                     </a>
                                 </li>
-                                @await Component.InvokeAsync("NumberCart")
-                                <li class="mobile-menu_wrap d-block d-lg-none">
-                                    <a href="#mobileMenu" class="mobile-menu_btn toolbar-btn pl-0">
-                                        <i class="pe-7s-menu"></i>
+                                @* @await Component.InvokeAsync("NumberWishList")  *@
+                                <li class="d-none d-md-block">
+                                    <a href="WishList.html">
+                                        <i class="pe-7s-like"></i>
                                     </a>
                                 </li>
+                                @await Component.InvokeAsync("NumberCart")
+                                <li></li>
                             </ul>
                         </div>
                     </div>
@@ -101,7 +85,7 @@
                                         <a href="/gioi-thieu.html">Về chúng tôi</a>
                                     </li>
                                     <li>
-                                        <a href="/shop.html">Product</a>
+                                        <a href="/shop.html">Sản phẩm</a>
                                     </li>
                                     <li>
                                         <a href="/page/huong-dan-mua-hang">Hướng dẫn mua hàng</a>
@@ -431,7 +415,8 @@
     </div>
     <div class="offcanvas-minicart_wrapper" id="miniCart">
         @await Component.InvokeAsync("HeaderCart")
-        
+
     </div>
     <div class="global-overlay"></div>
 </header>
+

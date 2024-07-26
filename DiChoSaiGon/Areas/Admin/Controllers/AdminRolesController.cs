@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiChoSaiGon.Models;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiChoSaiGon.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin", Policy = "AdminPolicy", AuthenticationSchemes = "AdminAuthen")]
     [Area("Admin")]
     public class AdminRolesController : Controller
     {
@@ -116,6 +118,56 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
                     {
                         throw;
                     }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(role);
+        }
+
+        public async Task<IActionResult> Permission(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var role = await _context.Roles.FindAsync(id);
+
+            var functions = _context.Functions.ToList();
+
+            ViewBag.ListFunction = functions;
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+            
+            return View(role);
+        }
+
+        // POST: Admin/AdminRoles/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Permission(int id, [Bind("RoleId, RoleName,Description,FunctionId, CanCreate, CanRead, CanEdit, CanDelete")] Role role)
+        {
+            if (id != role.RoleId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(role);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Cập nhật thành công");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    
                 }
                 return RedirectToAction(nameof(Index));
             }

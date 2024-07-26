@@ -18,23 +18,22 @@
                         <td>@item.OrderDate</td>
                         <td>@item.ShipDate</td>
                         <td>@item.TransactStatus.Status</td>
-                        <td>@item.</td>
+                        <td>@item.TotalMoney</td>
                         <td>
-                            <a href="javascript:void(0)" class="btn btn-secondary btn-primary-hover"><span>View</span></a>
+                            <a class="xemdonhang" href="javascript:void(0)" data-madonhang="@item.OrderId"><span>View</span></a>
                         </td>
                     </tr>
-                    <tr>
-                        <td><a class="account-order-id" href="javascript:void(0)">#5356</a></td>
-                        <td>Mar 27, 2019</td>
-                        <td>On Hold</td>
-                        <td>$162.00 for 2 items</td>
-                        <td>
-                            <a href="javascript:void(0)" class="btn btn-secondary btn-primary-hover"><span>View</span></a>
-                        </td>
-                    </tr>
+                    
                 }
                 </tbody>
             </table>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <hr/>
+            <div id="records-table"></div>
     </div>
 }
 else

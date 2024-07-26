@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
+using System.Drawing.Printing;
 
 namespace DiChoSaiGon.Controllers
 {
@@ -19,13 +20,16 @@ namespace DiChoSaiGon.Controllers
             try
             {
                 var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-                var pageSize = 10;
+                var pageSize = 12;
+                var lsCatNames = _context.Categories.ToList();
                 var lsProducts = _context.Products
                     .AsNoTracking()
+                    .Include(x => x.Cat)
                     .OrderByDescending(x => x.DateCreated);
                 PagedList<Product> models = new PagedList<Product>(lsProducts, pageNumber, pageSize);
 
                 ViewBag.CurrentPage = pageNumber;
+                ViewBag.CatNames = lsCatNames;
                 return View(models);
             }
             catch
@@ -40,7 +44,7 @@ namespace DiChoSaiGon.Controllers
         {
             try
             {
-                var pageSize = 10;
+                var pageSize = 12;
                 var danhmuc = _context.Categories.AsNoTracking().SingleOrDefault(x=> x.Alias == Alias);
                 var lsProducts = _context.Products
                     .AsNoTracking()
@@ -84,5 +88,38 @@ namespace DiChoSaiGon.Controllers
             }
             
         }
+
+        [HttpPost]
+        public IActionResult Sort(int sortBy)
+        {
+            List<Product> sortedProducts = new List<Product>();
+            switch (sortBy)
+            {
+                case 1: // Sort by Default
+                    sortedProducts = _context.Products.OrderByDescending(p => p.DateCreated).ToList();
+                    break;
+                case 2: // Sort by name A->Z
+                    sortedProducts = _context.Products.OrderBy(p => p.ProductName).ToList();
+                    break;
+                case 3: // Sort by name Z->A
+                    sortedProducts = _context.Products.OrderByDescending(p => p.ProductName).ToList();
+                    break;
+                case 4: // Sort by Latest
+                    sortedProducts = _context.Products.OrderBy(p => p.DateCreated).ToList();
+                    break;
+                case 5: // Sort by High Price
+                    sortedProducts = _context.Products.OrderByDescending(p => p.Price).ToList();
+                    break;
+                case 6: // Sort by Low Price
+                    sortedProducts = _context.Products.OrderBy(p => p.Price).ToList();
+                    break;
+                default:
+                    sortedProducts = _context.Products.ToList(); // Default sorting
+                    break;
+            }
+
+            return PartialView("ListProductPartial", sortedProducts);
+        }
+
     }
 }

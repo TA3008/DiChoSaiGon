@@ -4,6 +4,7 @@ using DiChoSaiGon.Helpper;
 using DiChoSaiGon.Models;
 using DiChoSaiGon.ModelViews;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace DiChoSaiGon.Controllers
     [Authorize]
     public class AccountsController : Controller
     {
+        
         private readonly DiChoSaiGonEcommerceContext _context;
 
         public INotyfService _notifyService { get; }
@@ -23,6 +25,7 @@ namespace DiChoSaiGon.Controllers
         {
             _context = context;
             _notifyService = notifyService;
+            
         }
         [HttpGet]
         [AllowAnonymous]
@@ -145,16 +148,16 @@ namespace DiChoSaiGon.Controllers
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             if (taikhoanID != null)
             {
-
                 return RedirectToAction("Dashboard", "Accounts");
             }
-            return View();
+            return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
+
 
         [HttpPost]
         [AllowAnonymous]
         [Route("dang-nhap.html", Name = "DangNhap")]
-        public async Task<IActionResult> Login(LoginViewModel customer, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel customer)
         {
             try
             {
@@ -200,7 +203,14 @@ namespace DiChoSaiGon.Controllers
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(claimsPrincipal);
                     _notifyService.Success("Đăng nhập thành công ");
-                    return RedirectToAction("Dashboard", "Accounts");
+                    if (!string.IsNullOrEmpty(customer.ReturnUrl))
+                    {
+                        return RedirectToAction("Index", "Checkout");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Dashboard", "Accounts");
+                    }
                 }
             }
             catch
@@ -257,5 +267,22 @@ namespace DiChoSaiGon.Controllers
             _notifyService.Error("Đổi mật khẩu thất bại");
             return RedirectToAction("Dashboard", "Accounts");
         }
+        public async Task SignInGoogle()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
+                new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("GoogleResponse")
+                });
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+       
+
+        
     }
 }

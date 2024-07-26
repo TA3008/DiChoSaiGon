@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using DiChoSaiGon.ModelViews;
 
 namespace DiChoSaiGon.Models;
 
@@ -18,9 +17,13 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
 
     public virtual DbSet<Account> Accounts { get; set; }
 
+    public virtual DbSet<Banner> Banners { get; set; }
+
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Customer> Customers { get; set; }
+
+    public virtual DbSet<Function> Functions { get; set; }
 
     public virtual DbSet<Location> Locations { get; set; }
 
@@ -29,6 +32,8 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<Page> Pages { get; set; }
+
+    public virtual DbSet<Permission> Permissions { get; set; }
 
     public virtual DbSet<Post> Posts { get; set; }
 
@@ -40,6 +45,8 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
 
     public virtual DbSet<TransactStatus> TransactStatuses { get; set; }
 
+    public virtual DbSet<WishList> WishLists { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server = DESKTOP-KT8MQVO; Database = DiChoSaiGon_Ecommerce; Integrated Security = true;Trusted_Connection=True;TrustServerCertificate=True;");
@@ -48,16 +55,16 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.Property(e => e.AccountId).HasColumnName("AccountID");
             entity.Property(e => e.CreateDate).HasColumnType("datetime");
-            entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.FullName).HasMaxLength(150);
+            entity.Property(e => e.Email)
+                .HasMaxLength(150)
+                .IsFixedLength();
+            entity.Property(e => e.FullName).HasMaxLength(255);
             entity.Property(e => e.LastLogin).HasColumnType("datetime");
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.Phone)
                 .HasMaxLength(12)
                 .IsUnicode(false);
-            entity.Property(e => e.RoleId).HasColumnName("RoleID");
             entity.Property(e => e.Salt)
                 .HasMaxLength(10)
                 .IsFixedLength();
@@ -65,6 +72,16 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
                 .HasConstraintName("FK_Accounts_Roles");
+        });
+
+        modelBuilder.Entity<Banner>(entity =>
+        {
+            entity.Property(e => e.BannerId).HasColumnName("BannerID");
+            entity.Property(e => e.BannerHeaderText).HasMaxLength(255);
+            entity.Property(e => e.BannerName).HasMaxLength(255);
+            entity.Property(e => e.BannerText).HasMaxLength(255);
+            entity.Property(e => e.DateModified).HasColumnType("datetime");
+            entity.Property(e => e.Thumb).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -105,7 +122,17 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
 
             entity.HasOne(d => d.Location).WithMany(p => p.Customers)
                 .HasForeignKey(d => d.LocationId)
-                .HasConstraintName("FK_Customers_Locations");
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Customers_Locations1");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Customers)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK_Customers_Roles");
+        });
+
+        modelBuilder.Entity<Function>(entity =>
+        {
+            entity.Property(e => e.FunctionName).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Location>(entity =>
@@ -122,6 +149,7 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
         {
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.LocationId).HasColumnName("LocationID");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
@@ -134,6 +162,7 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
 
             entity.HasOne(d => d.TransactStatus).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.TransactStatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Orders_TransactStatus");
         });
 
@@ -142,13 +171,18 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
             entity.HasKey(e => e.OrderDetailsId);
 
             entity.Property(e => e.OrderDetailsId).HasColumnName("OrderDetailsID");
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.ShipDate).HasColumnType("datetime");
+            entity.Property(e => e.ProductName).HasMaxLength(250);
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("FK_OrderDetails_Orders");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_OrderDetails_Products");
         });
 
         modelBuilder.Entity<Page>(entity =>
@@ -161,6 +195,19 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
             entity.Property(e => e.PageName).HasMaxLength(250);
             entity.Property(e => e.Thumb).HasMaxLength(250);
             entity.Property(e => e.Title).HasMaxLength(250);
+        });
+
+        modelBuilder.Entity<Permission>(entity =>
+        {
+            entity.HasOne(d => d.Function).WithMany(p => p.Permissions)
+                .HasForeignKey(d => d.FunctionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Priorities_Functions");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Permissions)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Permissions_Roles");
         });
 
         modelBuilder.Entity<Post>(entity =>
@@ -228,10 +275,24 @@ public partial class DiChoSaiGonEcommerceContext : DbContext
             entity.Property(e => e.Status).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<WishList>(entity =>
+        {
+            entity.Property(e => e.WishListId).HasColumnName("WishListID");
+            entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.Quantity).HasDefaultValue(1);
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.WishLists)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK_WishLists_Customers");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.WishLists)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_WishLists_Products");
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-public DbSet<DiChoSaiGon.ModelViews.RegisterVM> RegisterVM { get; set; } = default!;
 }

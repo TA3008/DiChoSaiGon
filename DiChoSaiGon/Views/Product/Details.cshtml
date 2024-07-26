@@ -37,21 +37,7 @@
                                         <img class="img-full" src="~/images/products/@Model.Thumb" alt="Product Image">
                                     </a>
                                 </div>
-                                <div class="swiper-slide">
-                                    <a href="~/assets/images/product/large-size/2-2-555x645.jpg" class="single-img gallery-popup">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-2-555x645.jpg" alt="Product Image">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="~/assets/images/product/large-size/2-3-555x645.jpg" class="single-img gallery-popup">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-3-555x645.jpg" alt="Product Image">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="~/assets/images/product/large-size/2-4-555x645.jpg" class="single-img gallery-popup">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-4-555x645.jpg" alt="Product Image">
-                                    </a>
-                                </div>
+
                             </div>
                             <!-- Add Pagination -->
                             <div class="swiper-pagination"></div>
@@ -91,12 +77,13 @@
                                     </li>
                                     <li class="add-to-cart">
                                         <a class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" href="javascript:void(0)">Add to cart</a>
-                                        <input hidden asp-for="ProductId"/>
+                                        <input hidden asp-for="ProductId" />
                                     </li>
-                                    <li class="wishlist-btn-wrap">
-                                        <a class="btn rounded-0" href="wishlist.html">
+                                    <li class="add-to-WishList">
+                                        <a class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" href="javascript:void(0)">
                                             <i class="pe-7s-like"></i>
                                         </a>
+                                        <input hidden asp-for="ProductId" />
                                     </li>
                                 </ul>
                                 <div class="product-category text-matterhorn pb-2">
@@ -107,27 +94,9 @@
                                         </li>
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="col-12 order-lg-2 order-1 pt-10 pt-lg-0">
-                            <div class="swiper-container single-product-thumbs">
-                                <div class="swiper-wrapper">
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-1-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-2-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-3-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-                                    <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-4-555x645.jpg" alt="Product Thumnail">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -354,37 +323,67 @@
     </div>
 </main>
 <!-- Main Content Area End Here  -->
+
 @section Scripts {
     <script>
         $(document).ready(function () {
             $(function () {
                 $(".add-to-cart").click(function () {
-                    var productid = $('ProductId').val();
-                    var soluong = $('txtsoluong').val();
+                    var productid = $('#ProductId').val();
+                    var soluong = $('#txtsoluong').val();
                     $.ajax({
 
                         url: '/api/cart/add',
-                        type: "POST".
+                        type: "POST",
                         dataType: "JSON",
-                        data: { 
+                        data: {
                             productID: productid,
                             amount: soluong
                         },
                         success: function (response) {
-                            if (response.result == 'Redirect') {
-                                window.location = response.url;
-                            }
 
-                            else {
-                                loadHeaderCart(); // Add Product sucsess
-                                location.reload();
-                            }
-                            console.log(response); //log to the console to see whether it worked
+                            loadHeaderCart(); // Add Product sucsess
+                            location.reload();
                         },
                         error: function (error) {
-                            alert("There was an error posting the data to the server: "+ error.responseText);
+                            alert("Lỗi: Không thể thêm sản phẩm vào giỏ hàng");
                         }
                     });
                 });
+            });
+
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart");
+                $("#numberCart").load("/AjaxContent/NumberCart");
+            }
+
+            $(function () {
+                $(".add-to-WishList").click(function () {
+                    var productid = $('#ProductId').val();
+                    $.ajax({
+
+                        url: '/Wishlist/AddToWishlist',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productID: productid,
+                        },
+                        success: function (response) {
+                            var successMessage = '@TempData["SuccessMessage"]';
+                            if (successMessage !== '') {
+                                alert(successMessage);
+                            }
+                            location.reload();
+                        },
+                        error: function (error) {
+                        }
+                    });
+                });
+            });
+
+            function loadHeaderWishList() {
+                $("#numberWishList").load("/AjaxContent/NumberWishList");
+            }
+        });
     </script>
 }

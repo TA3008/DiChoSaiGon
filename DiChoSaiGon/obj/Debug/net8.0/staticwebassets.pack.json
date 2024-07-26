@@ -4693,8 +4693,48 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\background.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\background.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\banner-1.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\banner-1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\banner-1234.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\banner-1234.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\banner-2.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\banner-2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\banner-3.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\banner-3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\banner-4.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\banner-4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\banner3.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\banner3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\test-2.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\test-2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\banners\\test.jpg",
+      "PackagePath": "staticwebassets\\images\\banners\\test.jpg"
+    },
+    {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\categories\\rau-cu.png",
       "PackagePath": "staticwebassets\\images\\categories\\rau-cu.png"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\logos\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logos\\logo.png"
     },
     {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\pages\\gioi-thieu.png",
@@ -4713,12 +4753,40 @@
       "PackagePath": "staticwebassets\\images\\pages\\lien-he.png"
     },
     {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\posts\\cach-bao-quan-rau-tuoi-lau.jpg",
+      "PackagePath": "staticwebassets\\images\\posts\\cach-bao-quan-rau-tuoi-lau.jpg"
+    },
+    {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\posts\\di-hop-phu-huynh-ong-bo-o-ha-noi-sung-sot-khi-doc-hai-cau-tho-tren-ban-tuyet-doi-dung-de-me-thay.png",
       "PackagePath": "staticwebassets\\images\\posts\\di-hop-phu-huynh-ong-bo-o-ha-noi-sung-sot-khi-doc-hai-cau-tho-tren-ban-tuyet-doi-dung-de-me-thay.png"
     },
     {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\posts\\gia-tri-bo-duong-trong-rau-cu-qua-doi-voi-doi-song-suc-khoe-con-nguoi.jpg",
+      "PackagePath": "staticwebassets\\images\\posts\\gia-tri-bo-duong-trong-rau-cu-qua-doi-voi-doi-song-suc-khoe-con-nguoi.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\posts\\lua-chon-va-su-dung-thuc-pham-rau-cu-qua-an-toan.jpg",
+      "PackagePath": "staticwebassets\\images\\posts\\lua-chon-va-su-dung-thuc-pham-rau-cu-qua-an-toan.jpg"
+    },
+    {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\posts\\post-1.png",
       "PackagePath": "staticwebassets\\images\\posts\\post-1.png"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\buoi.png",
+      "PackagePath": "staticwebassets\\images\\products\\buoi.png"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\chanh-day.png",
+      "PackagePath": "staticwebassets\\images\\products\\chanh-day.png"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\dua.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\dua.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\gung.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\gung.jpg"
     },
     {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\hanh-la.png",
@@ -4729,12 +4797,20 @@
       "PackagePath": "staticwebassets\\images\\products\\rau-muong.png"
     },
     {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\sup-lo.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\sup-lo.jpg"
+    },
+    {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\thit-ga.png",
       "PackagePath": "staticwebassets\\images\\products\\thit-ga.png"
     },
     {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\toi.png",
       "PackagePath": "staticwebassets\\images\\products\\toi.png"
+    },
+    {
+      "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\trung-ga.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\trung-ga.jpg"
     },
     {
       "Id": "C:\\Users\\ADMIN\\source\\repos\\DiChoSaiGon\\DiChoSaiGon\\wwwroot\\images\\products\\xa-lach.png",

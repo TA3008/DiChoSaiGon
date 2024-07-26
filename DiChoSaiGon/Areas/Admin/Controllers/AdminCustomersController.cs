@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiChoSaiGon.Models;
 using PagedList.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiChoSaiGon.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin, Staff", Policy = "AdminAndStaffPolicy", AuthenticationSchemes = "AdminAuthen, StaffAuthen")]
     [Area("Admin")]
     public class AdminCustomersController : Controller
     {

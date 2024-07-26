@@ -18,6 +18,8 @@ namespace DiChoSaiGon.Controllers
             _context = context;
         }
 
+
+
         public IActionResult Index()
         {
             HomeViewVM model = new HomeViewVM();
@@ -48,8 +50,14 @@ namespace DiChoSaiGon.Controllers
                 .Take(3)
                 .ToList();
 
+            var Banner = _context.Banners.AsNoTracking()
+                .Where(x => x.Active == true)
+                .OrderBy(x => x.OrderIndex)
+                .ToList();
+
             model.Products = lsProductViews;
             model.Posts = Post;
+            model.Banners = Banner;
             ViewBag.AllProducts = lsProducts;
             return View(model);
         }

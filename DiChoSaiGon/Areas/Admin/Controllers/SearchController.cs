@@ -1,10 +1,12 @@
 ﻿using DiChoSaiGon.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Text;
 
 namespace DiChoSaiGon.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin, Staff", Policy = "AdminAndStaffPolicy", AuthenticationSchemes = "AdminAuthen, StaffAuthen")]
     [Area("Admin")]
     public class SearchController : Controller
     {
@@ -19,24 +21,31 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
         public IActionResult FindProduct(string keyword)
         {
             List<Product> ls = new List<Product>();
-            if (string.IsNullOrEmpty(keyword) || keyword.Length < 1) 
+            if (string.IsNullOrEmpty(keyword) || keyword.Length < 1)
             {
-                return PartialView("ListProductsSearchPartial", null);
+                ls = _context.Products
+                    .AsNoTracking()
+                    .Include(a => a.Cat)
+                    .Where(x => true)
+                    .OrderByDescending(x => x.ProductId)
+                    .ToList();
+
+                return PartialView("AdminListProductsSearchPartial", ls);
             }
             ls = _context.Products
                 .AsNoTracking()
                 .Include(a => a.Cat)
-                .Where(x => x.ProductName.Contains(keyword))
+                .Where(x => x.ProductName.Contains(keyword) || x.Cat.CatName.Contains(keyword))
                 .OrderByDescending(x => x.ProductName)
                 .Take(10)
                 .ToList();
             if (ls == null)
             {
-                return PartialView("ListProductsSearchPartial", null);
-            }    
+                return PartialView("AdminListProductsSearchPartial", null);
+            }
             else
             {
-                return PartialView("ListProductsSearchPartial", ls);
+                return PartialView("AdminListProductsSearchPartial", ls);
             }
         }
     }

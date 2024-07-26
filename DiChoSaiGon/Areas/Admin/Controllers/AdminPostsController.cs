@@ -9,9 +9,11 @@ using DiChoSaiGon.Models;
 using PagedList.Core;
 using DiChoSaiGon.Helpper;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiChoSaiGon.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin, Staff", Policy = "AdminAndStaffPolicy", AuthenticationSchemes = "AdminAuthen, StaffAuthen")]
     [Area("Admin")]
     public class AdminPostsController : Controller
     {

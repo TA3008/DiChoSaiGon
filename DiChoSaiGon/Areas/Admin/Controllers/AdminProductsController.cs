@@ -9,9 +9,11 @@ using DiChoSaiGon.Models;
 using PagedList.Core;
 using DiChoSaiGon.Helpper;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiChoSaiGon.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin, Staff", Policy = "AdminAndStaffPolicy", AuthenticationSchemes = "AdminAuthen, StaffAuthen")]
     [Area("Admin")]
     public class AdminProductsController : Controller
     {
@@ -101,7 +103,7 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModified,BestSellers,HomeFlas,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitInStock")] Product product, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Create([Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModified,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitInStock")] Product product, Microsoft.AspNetCore.Http.IFormFile? fThumb)
         {
             if (ModelState.IsValid)
             {
@@ -151,7 +153,7 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModified,BestSellers,HomeFlas,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitInStock")] Product product, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModified,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitInStock")] Product product, Microsoft.AspNetCore.Http.IFormFile? fThumb)
         {
             if (id != product.ProductId)
             {
@@ -162,7 +164,6 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
             {
                 try
                 {
-                    product.ProductName = Utilities.ToTitleCase(product.ProductName);
                     {
                         if (fThumb != null)
                         {

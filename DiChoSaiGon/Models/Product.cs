@@ -46,4 +46,8 @@ public partial class Product
     public int? UnitInStock { get; set; }
 
     public virtual Category? Cat { get; set; }
+
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+
+    public virtual ICollection<WishList> WishLists { get; set; } = new List<WishList>();
 }

@@ -6,23 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiChoSaiGon.Models;
+using DiChoSaiGon.Helpper;
+using DiChoSaiGon.Extension;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using DiChoSaiGon.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiChoSaiGon.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin", Policy = "AdminPolicy", AuthenticationSchemes = "AdminAuthen")]
     [Area("Admin")]
     public class AdminAccountsController : Controller
     {
         private readonly DiChoSaiGonEcommerceContext _context;
 
-        public AdminAccountsController(DiChoSaiGonEcommerceContext context)
+        public INotyfService _notyfService { get; }
+
+        public AdminAccountsController(DiChoSaiGonEcommerceContext context, INotyfService notifyService)
         {
             _context = context;
+            _notyfService = notifyService;
         }
 
         // GET: Admin/AdminAccounts
         public async Task<IActionResult> Index()
         {
+            //if(User.Claims)
             ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "Description");
+            var roleName = _context.Accounts.Include(a => a.Role);
+            ViewBag.RoleName = roleName;
 
             List<SelectListItem> lsTrangThai = new List<SelectListItem>();
             lsTrangThai.Add(new SelectListItem() { Text = "Active", Value = "1" });
@@ -55,7 +67,7 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
         // GET: Admin/AdminAccounts/Create
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId");
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "RoleName");
             return View();
         }
 
@@ -68,12 +80,50 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                string salt = Utilities.GetRandomKey();
+                account.Salt = salt;
+
+                // tạo ngẫu nhiên mật khẩu
+                account.Password = (account.Password + salt.Trim()).ToMD5();
+                account.CreateDate = DateTime.Now;
                 _context.Add(account);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Tạo mới tài khoản quản trị thành công");
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "RoleName", account.RoleId);
             return View(account);
+        }
+
+        // GET: Admin/AdminAccounts/ChangePassword
+        public IActionResult ChangePassword()
+        {
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "RoleName");
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var taikhoan = _context.Accounts.AsNoTracking().SingleOrDefault(x=>x.Email == model.Email);
+                if (taikhoan == null)
+                {
+                    return RedirectToAction("Login", "Accounts");
+                }
+                var pass = (model.PasswordNow.Trim() + taikhoan.Salt.Trim()).ToMD5();
+                if (pass == taikhoan.Password)
+                {
+                    string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
+                    taikhoan.Password = passnew;
+                    taikhoan.LastLogin = DateTime.Now;
+                    _context.Update(taikhoan);
+                    _context.SaveChanges();
+                    _notyfService.Success("Đổi mật khẩu thành công");
+                    return RedirectToAction("Dashboard", "Accounts", new { Area = "Admin"});
+                }
+            }
+            return View();
         }
 
         // GET: Admin/AdminAccounts/Edit/5
@@ -89,7 +139,7 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "RoleName", account.RoleId);
             return View(account);
         }
 
@@ -125,7 +175,7 @@ namespace DiChoSaiGon.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "RoleName", account.RoleId);
             return View(account);
         }
 
